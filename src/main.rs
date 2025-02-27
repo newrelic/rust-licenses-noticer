@@ -1,3 +1,11 @@
+#![warn(missing_docs)]
+
+//! # Third Party Notices Generator
+//!
+//! `third-party-notices-generator` is a tool to generate a markdown file with the third party notices
+//! of the dependencies of a project.
+//!
+//! The tool takes a JSON string with the dependency metadata as output by `cargo deny --manifest-path <PATH_TO_CARGO_TOML> list -l crate -f json` and generates a markdown file with the relevant information.
 extern crate tera;
 #[macro_use]
 extern crate lazy_static;
