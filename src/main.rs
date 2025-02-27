@@ -22,7 +22,7 @@ struct Args {
     #[arg(short, long)]
     dependencies: String,
     #[arg(short, long)]
-    template_path: PathBuf,
+    templates_path: PathBuf,
     #[arg(short, long)]
     #[clap(default_value = "THIRD_PARTY_NOTICES.md")]
     output_file: PathBuf,
@@ -31,7 +31,7 @@ struct Args {
 fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
 
-    let templates = Tera::new(&args.template_path.to_string_lossy())?;
+    let templates = Tera::new(&args.templates_path.to_string_lossy())?;
 
     let mut f = File::create(args.output_file)?;
     let markdown = render_markdown(args.dependencies, &templates);
