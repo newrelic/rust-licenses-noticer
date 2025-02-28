@@ -1,3 +1,14 @@
+//! This test is a golden test that compares a known output of a `cargo-deny` command with a
+//! known good output. The test is run in a temporary directory to avoid any issues with
+//! the current directory of the test runner.
+//!
+//! The test is run by invoking our actual binary with the known output file as input and a known
+//! good template file. The output is then compared to the known good output file.
+//!
+//! This helps to make sure no modification of this crate break how this template is generated, so
+//! this test is **not intended to be modified**.
+//! Any change on `rust-licenses-noticer` that breaks how the notices file is generated
+//! will be caught here.
 use std::{
     fs,
     path::{Path, PathBuf},
