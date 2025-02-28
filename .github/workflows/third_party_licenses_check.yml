@@ -35,7 +35,7 @@ jobs:
           --
           --dependencies "$(cat dependencies.json)"
           --output-file "./THIRD_PARTY_NOTICES.md"
-          --template-path "./third_party_licenses_templates/*"
+          --template-path "./src/templates/*"
 
       - name: Check if `THIRD_PARTY_NOTICES.md` was up to date
         run: >

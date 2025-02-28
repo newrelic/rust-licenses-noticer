@@ -9,5 +9,6 @@ There are two files in the `fixtures` directory:
   - `cargo-deny` 0.16.3
   - The logic for the generation belongs to [this revision](https://github.com/newrelic/newrelic-agent-control/blob/fc327420b5e1c63fbaa6525cf8bf95e3f1ce7e5b/license/src/main.rs#L1).
 - `expected_third_party_notices_file.md` is a third party notices file, as generated from the previous JSON contents passed through `rust-licenses-noticer` in a known previous state. Specifically, before the crate was moved to this repository, with the template tailored to `newrelic-oauth-client-rs`.
+- `templates/THIRD_PARTY_NOTICES.md.tmpl` is the template file used. The program accepts a path, globbing all templates inside. Hence, we add the template inside the `templates` subdirectory.
 
 Any change on `rust-licenses-noticer` that breaks how the notices file is generated will be caught here.
