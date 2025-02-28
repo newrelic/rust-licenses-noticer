@@ -1,0 +1,67 @@
+name: "Rust Licenses Noticer"
+description: >
+  Retrieves dependency metadata of your Rust project with `cargo-deny`,
+  generates a `THIRD_PARTY_NOTICES.md` file from a provided template and
+  compares it with yours, failing if they are not the same.
+inputs:
+  project-root: # id of input
+    description: "The root directory of the project to check"
+    required: false
+    default: "."
+  template-path:
+    description: "The path to the template directory to use"
+    required: true
+
+# outputs:
+#   random-number:
+#     description: "Random number"
+#     value: ${{ steps.random-number-generator.outputs.random-number }}
+runs:
+  using: "composite"
+  steps:
+    - name: Install Rust stable
+      uses: dtolnay/rust-toolchain@1.85.0
+
+    - name: Install cargo-deny
+      run: >
+        cargo install cargo-deny
+        --quiet --locked
+      shell: bash
+
+    - name: Retrieve dependencies with cargo deny
+      run: >
+        echo "LICENSES=$(
+        cargo deny --all-features
+        --log-level off
+        --manifest-path ${{ inputs.project-root }}/Cargo.toml
+        list -l crate -f json
+        )" >> $GITHUB_ENV
+
+      shell: bash
+
+    - name: Install rust-licenses-noticer
+      run: >
+        cargo install
+        --git https://github.com/newrelic/rust-licenses-noticer.git
+        --quiet --locked
+      shell: bash
+
+    - name: Perform the third party licenses check
+      run: >
+        rust-licenses-noticer
+        --dependencies "$LICENSES"
+        --output-file "./THIRD_PARTY_NOTICES.md"
+        --template-path "${{ inputs.template-path }}/*"
+      shell: bash
+
+    - name: Check if `THIRD_PARTY_NOTICES.md` was up to date
+      run: >
+        git diff --name-only
+        | grep -q "THIRD_PARTY_NOTICES.md"
+        && { 
+          echo "Third party notices out of date.
+          Please run rust-licenses-noticer in this repo and commit the changes in this PR.";
+          exit 1;
+        }
+        || echo "Third party notices up to date."
+      shell: bash
