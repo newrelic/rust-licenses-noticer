@@ -1,5 +1,3 @@
-#![warn(missing_docs)]
-
 //! # Third Party Notices Generator
 //!
 //! `third-party-notices-generator` is a tool to generate a markdown file with the third party notices
