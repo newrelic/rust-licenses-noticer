@@ -1,32 +1,31 @@
-use std::{fs, path::Path};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 use assert_cmd::Command;
 use assert_fs::{assert::PathAssert, prelude::PathChild};
+
+fn fixtures_path() -> PathBuf {
+    Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("tests")
+        .join("golden")
+        .join("fixtures")
+}
 
 #[test]
 fn golden() {
     let tmp_dir = assert_fs::TempDir::new().unwrap();
 
-    let cargo_deny_output = fs::read_to_string(
-        Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("tests")
-            .join("golden")
-            .join("fixtures")
-            .join("cargo_deny_output.json"),
-    )
-    .unwrap();
+    let cargo_deny_output =
+        fs::read_to_string(fixtures_path().join("cargo_deny_output.json")).unwrap();
 
     let mut cmd = Command::cargo_bin(env!("CARGO_PKG_NAME")).unwrap();
     cmd.current_dir(tmp_dir.path())
         .arg("--dependencies")
         .arg(cargo_deny_output)
         .arg("--template-path")
-        .arg(
-            Path::new(env!("CARGO_MANIFEST_DIR"))
-                .join("src")
-                .join("templates")
-                .join("*"),
-        )
+        .arg(fixtures_path().join("templates").join("*"))
         .arg("--output-file")
         .arg(tmp_dir.path().join("THIRD_PARTY_NOTICES.md"));
 
@@ -42,10 +41,6 @@ fn golden() {
     // perform a manual diff after inspecting where the temp dir is created:
     // `diff tests/fixtures/expected_third_party_notices_file.md <TMP_DIR>/THIRD_PARTY_NOTICES.md`
     actual_file.assert(predicates::path::eq_file(
-        Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("tests")
-            .join("golden")
-            .join("fixtures")
-            .join("expected_third_party_notices_file.md"),
+        fixtures_path().join("expected_third_party_notices_file.md"),
     ));
 }
