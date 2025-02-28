@@ -174,8 +174,26 @@
             );
           };
 
+        # Run the flake directly from anywhere with `nix run github:newrelic/rust-licenses-noticer`,
+        # and don't worry about installing `cargo-deny`! (nor `git`... but you have that, do you?)
         apps.default = flake-utils.lib.mkApp {
-          drv = rust-licenses-noticer;
+          drv = pkgs.writeShellScriptBin "third-party-licenses-check" ''
+            set -euo pipefail
+
+            # print passd arguments (TODO for customizing output files, templates, etc.)
+            echo "Arguments: $@"
+
+            LICENSES=$(${pkgs.cargo-deny}/bin/cargo-deny --all-features --log-level off --manifest-path Cargo.toml list -l crate -f json)
+            echo $LICENSES
+            ${rust-licenses-noticer}/bin/rust-licenses-noticer --dependencies "$LICENSES" --output-file "THIRD_PARTY_NOTICES.md" --template-path "third_party_licenses_templates/*"
+
+            if ${pkgs.git}/bin/git diff --name-only | grep -q "THIRD_PARTY_NOTICES.md"; then
+              echo "Third party notices out of date, please run \"nix run github:newrelic/rust-licenses-noticer\" in your repo and commit the changes."
+              exit 1
+            fi
+
+            echo "Third party notices are up to date."
+          '';
         };
 
         devShells.default = craneLib.devShell {
