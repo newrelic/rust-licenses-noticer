@@ -37,7 +37,11 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let rendered = renderer.render(&args.dependencies)?;
 
-    fs::write(args.output_file, rendered)?;
+    fs::write(&args.output_file, rendered)?;
 
+    println!(
+        "Third party notices file generated at: {}",
+        args.output_file.display()
+    );
     Ok(())
 }
