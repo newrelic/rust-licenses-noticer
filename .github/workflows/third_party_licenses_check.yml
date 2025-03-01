@@ -43,10 +43,10 @@ jobs:
         run: |
           STATUS=$(git status --porcelain --untracked-files=all -- ./THIRD_PARTY_NOTICES.md)
 
-          if [[ "$STATUS" =~ ^\?\? ]]; then
+          if [[ "$STATUS" =~ ^"??" ]]; then
             echo "::error file=./THIRD_PARTY_NOTICES.md,title=untracked-file::Notices file was created. Please run rust-licenses-noticer locally and commit the changes."
             exit 1
-          elif [[ "$STATUS" =~ ^\\sM ]]; then
+          elif [[ "$STATUS" =~ ^" M" ]]; then
             echo "::error file=./THIRD_PARTY_NOTICES.md,title=modified-file::Notices file was modified. Please run rust-licenses-noticer locally and commit the changes."
             exit 1
           else
