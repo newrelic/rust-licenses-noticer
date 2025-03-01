@@ -488,12 +488,6 @@ Distributed under the following license(s):
 * MIT
 * Apache-2.0
 
-## rust-licenses-noticer <file:///Users/davidsanchez/Developer/NR-repos/rust-licenses-noticer>
-
-Distributed under the following license(s):
-
-* Apache-2.0
-
 ## rustversion <https://crates.io/crates/rustversion>
 
 Distributed under the following license(s):
