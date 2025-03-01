@@ -1,7 +1,10 @@
 //! Module for the template engine.
 //!
 //! This module contains the template engine that renders the markdown file with the dependencies data.
-use std::path::{Path, PathBuf};
+use std::{
+    io,
+    path::{Path, PathBuf},
+};
 
 use tera::{Context, Tera};
 use thiserror::Error;
@@ -25,19 +28,17 @@ pub struct TemplateRenderer {
 #[derive(Debug, Error)]
 pub enum TemplateError {
     /// Errors coming from the actual implementation of the templating engine.
-    #[error("Templating engine error: {0}")]
+    #[error("engine: {0}")]
     EngineImpl(tera::Error),
     /// Errors related to the template file handling.
-    #[error("Template file read error: {0}")]
-    TemplateFileRead(std::io::Error),
+    #[error("file validation: {0}")]
+    FileValidation(io::Error),
 }
 
 impl TryFrom<PathBuf> for TemplateRenderer {
     type Error = TemplateError;
     fn try_from(path: PathBuf) -> Result<Self, Self::Error> {
-        let path = path
-            .canonicalize()
-            .map_err(TemplateError::TemplateFileRead)?;
+        let path = path.canonicalize().map_err(TemplateError::FileValidation)?;
 
         validate_template_path(&path)?;
 
@@ -62,12 +63,12 @@ impl TryFrom<PathBuf> for TemplateRenderer {
 fn validate_template_path<P: AsRef<Path>>(path: P) -> Result<(), TemplateError> {
     let path = path.as_ref();
     if !path.exists() {
-        Err(TemplateError::TemplateFileRead(std::io::Error::new(
+        Err(TemplateError::FileValidation(std::io::Error::new(
             std::io::ErrorKind::NotFound,
             format!("Template file not found: {}", path.display()),
         )))
     } else if !path.is_file() {
-        Err(TemplateError::TemplateFileRead(std::io::Error::new(
+        Err(TemplateError::FileValidation(std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
             format!("Template path is not a file: {}", path.display()),
         )))
