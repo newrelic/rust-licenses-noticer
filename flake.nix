@@ -52,10 +52,9 @@
             (craneLib.fileset.commonCargoSources unfilteredRoot)
             # Additional paths
             ./tests/golden/fixtures
-            ./src/templates
             # Example: Also keep any markdown files
             # (lib.fileset.fileFilter (file: file.hasExt "md") unfilteredRoot)
-            # Example of a folder for images, icons, etc
+            # Example of a folder for images, icons, etc that might not be present
             # (lib.fileset.maybeMissing ./assets)
           ];
         };
