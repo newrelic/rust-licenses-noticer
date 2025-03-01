@@ -21,9 +21,9 @@ struct Args {
     /// JSON string with the dependencies data as output by `cargo deny list -l crate -f json`.
     #[arg(short, long)]
     dependencies: String,
-    /// Path to the templates. This should be a glob pattern.
+    /// Path to the template file.
     #[arg(short, long)]
-    templates_path: PathBuf,
+    template_path: PathBuf,
     /// Path to the output file. Will use `THIRD_PARTY_NOTICES.md` by default.
     #[arg(short, long)]
     #[clap(default_value = "THIRD_PARTY_NOTICES.md")]
@@ -33,7 +33,7 @@ struct Args {
 fn main() -> Result<(), Box<dyn Error>> {
     let args = Args::parse();
 
-    let renderer = TemplateRenderer::try_from(args.templates_path)?;
+    let renderer = TemplateRenderer::try_from(args.template_path)?;
 
     let rendered = renderer.render(&args.dependencies)?;
 
