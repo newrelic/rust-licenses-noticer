@@ -40,7 +40,7 @@ fn golden() {
     cmd.current_dir(tmp_dir.path())
         .arg("--dependencies")
         .arg(cargo_deny_output)
-        .arg("--template-path")
+        .arg("--template-file")
         .arg(fixtures_path().join("THIRD_PARTY_NOTICES.md.tmpl"))
         .arg("--output-file")
         .arg(tmp_dir.path().join("THIRD_PARTY_NOTICES.md"));

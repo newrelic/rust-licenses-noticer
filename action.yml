@@ -8,7 +8,7 @@ inputs:
     description: "The root directory of the project to check"
     required: false
     default: ${{ github.workspace }}
-  template-file-path:
+  template-file:
     description: "The path to the template file to use"
     required: true
   notices-file:
@@ -54,8 +54,8 @@ runs:
       run: >
         rust-licenses-noticer
         --dependencies "$LICENSES"
+        --template-file "${{ inputs.template-file }}"
         --output-file "${{ inputs.notices-file }}"
-        --template-path "${{ inputs.template-file-path }}"
       shell: bash
 
     - name: Check if the notices file was up to date

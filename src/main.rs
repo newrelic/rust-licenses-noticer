@@ -29,8 +29,8 @@ struct Args {
     dependencies: String,
     /// Path to the template file.
     #[arg(short, long)]
-    template_path: PathBuf,
-    /// Path to the output file. Will use `THIRD_PARTY_NOTICES.md` by default.
+    template_file: PathBuf,
+    /// Path to the output file.
     #[arg(short, long)]
     #[clap(default_value = "THIRD_PARTY_NOTICES.md")]
     output_file: PathBuf,
@@ -60,7 +60,7 @@ enum RunError {
 fn run() -> Result<(), RunError> {
     let args = Args::parse();
 
-    let renderer = TemplateRenderer::try_from(args.template_path)?;
+    let renderer = TemplateRenderer::try_from(args.template_file)?;
 
     let rendered = renderer.render(&args.dependencies)?;
 
