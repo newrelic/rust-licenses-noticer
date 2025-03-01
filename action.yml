@@ -7,10 +7,14 @@ inputs:
   project-root: # id of input
     description: "The root directory of the project to check"
     required: false
-    default: "."
-  template-path:
-    description: "The path to the template directory to use"
+    default: ${{ github.workspace }}
+  template-file-path:
+    description: "The path to the template file to use"
     required: true
+  notices-file:
+    description: "The path to the notices file"
+    required: false
+    default: "THIRD_PARTY_NOTICES.md"
 
 # outputs:
 #   random-number:
@@ -36,7 +40,6 @@ runs:
         --manifest-path ${{ inputs.project-root }}/Cargo.toml
         list -l crate -f json
         )" >> $GITHUB_ENV
-
       shell: bash
 
     - name: Install rust-licenses-noticer
@@ -50,18 +53,21 @@ runs:
       run: >
         rust-licenses-noticer
         --dependencies "$LICENSES"
-        --output-file "./THIRD_PARTY_NOTICES.md"
-        --template-path "${{ inputs.template-path }}/*"
+        --output-file "${{ inputs.notices-file }}"
+        --template-path "${{ inputs.template-file-path }}"
       shell: bash
 
-    - name: Check if `THIRD_PARTY_NOTICES.md` was up to date
-      run: >
-        git diff --name-only
-        | grep -q "THIRD_PARTY_NOTICES.md"
-        && { 
-          echo "Third party notices out of date.
-          Please run rust-licenses-noticer in this repo and commit the changes in this PR.";
-          exit 1;
-        }
-        || echo "Third party notices up to date."
+    - name: Check if the notices file was up to date
+      run: |
+        STATUS=$(git status --porcelain --untracked-files=all -- ${{ inputs.notices-file }})
+
+        if [[ "$STATUS" =~ ^\?\? ]]; then
+          echo "::error file=${{ inputs.notices-file }},title=untracked-file::Notices file was created. Please run rust-licenses-noticer locally and commit the changes."
+          exit 1
+        elif [[ "$STATUS" =~ ^\\sM ]]; then
+          echo "::error file=${{ inputs.notices-file }},title=modified-file::Notices file was modified. Please run rust-licenses-noticer locally and commit the changes."
+          exit 1
+        else
+          echo "Third party notices up to date."
+        fi
       shell: bash
