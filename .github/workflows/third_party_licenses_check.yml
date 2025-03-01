@@ -13,49 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Rust stable
-        uses: dtolnay/rust-toolchain@master
+      - uses: newrelic/rust-licenses-noticer@refactor/code-cleanup
         with:
-          toolchain: stable
-      
-      - name: Install cargo-deny
-        run: cargo install cargo-deny --locked
-
-      - name: Retrieve dependencies with cargo deny
-        run: >
-          cargo deny
-          --all-features
-          --log-level off
-          --manifest-path ./Cargo.toml
-          list
-          -l crate
-          -f json > dependencies.json
-
-      - name: Perform the third party licenses check
-        run: >
-          cargo run --manifest-path ./Cargo.toml
-          --
-          --dependencies "$(cat dependencies.json)"
-          --output-file "./THIRD_PARTY_NOTICES.md"
-          --template-path "./THIRD_PARTY_NOTICES.md.tmpl"
-
-      - name: Check if the notices file was up to date
-        run: |
-          STATUS=$(git status --porcelain --untracked-files=all -- ./THIRD_PARTY_NOTICES.md)
-
-          if [[ "$STATUS" =~ ^"??" ]]; then
-            echo "::error file=./THIRD_PARTY_NOTICES.md,title=Untracked file::Notices file was created. Please run rust-licenses-noticer locally and commit the changes."
-            echo "::group::Notices file contents"
-            git diff -- ./THIRD_PARTY_NOTICES.md
-            echo "::endgroup::"
-            exit 1
-          elif [[ "$STATUS" =~ ^" M" ]]; then
-            echo "::error file=./THIRD_PARTY_NOTICES.md,title=Modified file::Notices file was modified. Please run rust-licenses-noticer locally and commit the changes."
-            echo "::group::Notices file diff"
-            git diff -- ./THIRD_PARTY_NOTICES.md
-            echo "::endgroup::"
-            exit 1
-          else
-            echo "Third party notices up to date."
-          fi
+          template-file-path: "./THIRD_PARTY_NOTICES.md.tmpl"
 
