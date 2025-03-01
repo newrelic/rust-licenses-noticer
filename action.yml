@@ -15,11 +15,11 @@ inputs:
     description: "The path to the notices file"
     required: false
     default: "THIRD_PARTY_NOTICES.md"
+  rust-licenses-noticer-branch:
+    description: "The branch to use for the rust-licenses-noticer tool"
+    required: false
+    default: "main"
 
-# outputs:
-#   random-number:
-#     description: "Random number"
-#     value: ${{ steps.random-number-generator.outputs.random-number }}
 runs:
   using: "composite"
   steps:
@@ -46,6 +46,7 @@ runs:
       run: >
         cargo install
         --git https://github.com/newrelic/rust-licenses-noticer.git
+        --branch ${{ inputs.rust-licenses-noticer-branch }}
         --quiet --locked
       shell: bash
 
