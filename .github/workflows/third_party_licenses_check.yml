@@ -37,16 +37,19 @@ jobs:
           --
           --dependencies "$(cat dependencies.json)"
           --output-file "./THIRD_PARTY_NOTICES.md"
-          --templates-path "./third_party_licenses_templates/*"
+          --template-path "./THIRD_PARTY_NOTICES.md.tmpl"
 
-      - name: Check if `THIRD_PARTY_NOTICES.md` was up to date
-        run: >
-          git diff --name-only
-          | grep -q "THIRD_PARTY_NOTICES.md"
-          && { 
-            echo "Third party notices out of date.
-            Please run rust-licenses-noticer in this repo and commit the changes in this PR.";
-            exit 1;
-          }
-          || echo "Third party notices up to date."
+      - name: Check if the notices file was up to date
+        run: |
+          STATUS=$(git status --porcelain --untracked-files=all -- ./THIRD_PARTY_NOTICES.md)
+
+          if [[ "$STATUS" =~ ^\?\? ]]; then
+            echo "::error file=./THIRD_PARTY_NOTICES.md,title=untracked-file::Notices file was created. Please run rust-licenses-noticer locally and commit the changes."
+            exit 1
+          elif [[ "$STATUS" =~ ^\\sM ]]; then
+            echo "::error file=./THIRD_PARTY_NOTICES.md,title=modified-file::Notices file was modified. Please run rust-licenses-noticer locally and commit the changes."
+            exit 1
+          else
+            echo "Third party notices up to date."
+          fi
 
