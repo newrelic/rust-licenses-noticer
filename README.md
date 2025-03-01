@@ -24,7 +24,7 @@ This project is mostly intended to be used in your CI/CD pipelines, to ensure th
 
 The usage as a GitHub action assumes that you have a certain file in the root of your Rust project directory called `THIRD_PARTY_NOTICES.md`. This file lists the name of your dependencies, the URL in which they are located, and the licenses they distribute under. See this project's own [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md) as an example.
 
-The action will take a template directory of your choice as its `template-path` input. Provided these templates are compatible with [Tera](https://keats.github.io/tera/docs/), a file will be rendered as `THIRD_PARTY_NOTICES.md` by using the template with the metadata retrieved about your Rust project with `cargo deny`. See the example template located at [`src/templates`](./src/templates/), which was used to generate our [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md), for an idea of possible templates.
+The action will take a template directory of your choice as its `template-path` input. Provided there is a template in that directory called `THIRD_PARTY_NOTICES.md.tmpl` that is compatible with [Tera](https://keats.github.io/tera/docs/), a file will be rendered as `THIRD_PARTY_NOTICES.md` by using the template with the metadata retrieved about your Rust project with `cargo deny`. See the example template located at [`src/templates`](./src/templates/), which was used to generate our [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md), for an idea of possible templates.
 
 Then, just use it inside your workflows.
 
