@@ -5,12 +5,18 @@
 //!
 //! The tool takes a JSON string with the dependency metadata as output by `cargo deny --manifest-path <PATH_TO_CARGO_TOML> list -l crate -f json` and generates a markdown file with the relevant information.
 
-use rust_licenses_noticer::template::TemplateRenderer;
-use std::error::Error;
-use std::fs;
-use std::path::PathBuf;
-
 use clap::Parser;
+use rust_licenses_noticer::template::{TemplateError, TemplateRenderer};
+use std::path::PathBuf;
+use std::{fs, io};
+use thiserror::Error;
+
+fn main() {
+    if let Err(e) = run() {
+        eprintln!("Error: {e}");
+        std::process::exit(1);
+    }
+}
 
 /// Arguments for the CLI
 ///
@@ -30,7 +36,28 @@ struct Args {
     output_file: PathBuf,
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+/// Error type for the main function.
+///
+/// This is a simple error type that wraps the errors that can happen in the `run` function.
+#[derive(Debug, Error)]
+enum RunError {
+    /// Error related to file IO.
+    #[error("file io: {0}")]
+    Io(#[from] io::Error),
+    /// Error related to the template engine.
+    #[error("template: {0}")]
+    Template(#[from] TemplateError),
+}
+
+/// Main function of the CLI.
+///
+/// This function is responsible for parsing the arguments, reading the template file,
+/// rendering the template with the dependencies data and writing the output file.
+///
+/// # Errors
+///
+/// This function returns a `RunError` if any of the steps fails.
+fn run() -> Result<(), RunError> {
     let args = Args::parse();
 
     let renderer = TemplateRenderer::try_from(args.template_path)?;
