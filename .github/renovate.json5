@@ -1,0 +1,27 @@
+{
+  "extends": [
+    "config:base",
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "enabledManagers": [
+    "cargo",
+  ],
+  "rangeStrategy": "auto", // See <https://docs.renovatebot.com/configuration-options/#rangestrategy>
+  "prConcurrentLimit": 0,
+  "printConfig": true,
+  "prHourlyLimit": 0,
+  "packageRules": [
+    {
+      "managers": [
+        "cargo"
+      ],
+      "updateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "minor and patch updates"
+    }
+  ],
+}
