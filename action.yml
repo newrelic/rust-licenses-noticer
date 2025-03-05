@@ -79,3 +79,11 @@ runs:
           echo "Third party notices up to date."
         fi
       shell: bash
+
+    - name: Show the output of cargo deny
+      if: failure()
+      run: |
+        echo "::group::Cargo deny output"
+        echo "$LICENSES" | jq
+        echo "::endgroup::"
+      shell: bash
