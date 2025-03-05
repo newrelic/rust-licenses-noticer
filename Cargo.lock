@@ -760,11 +760,11 @@ dependencies = [
  "assert_cmd",
  "assert_fs",
  "clap",
- "lazy_static",
  "predicates",
  "serde",
  "serde_json",
  "tera",
+ "thiserror",
 ]
 
 [[package]]

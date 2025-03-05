@@ -24,7 +24,7 @@ This project is mostly intended to be used in your CI/CD pipelines, to ensure th
 
 The usage as a GitHub action assumes that you have a certain file in the root of your Rust project directory called `THIRD_PARTY_NOTICES.md`. This file lists the name of your dependencies, the URL in which they are located, and the licenses they distribute under. See this project's own [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md) as an example.
 
-The action will take a template directory of your choice as its `template-path` input. Provided there is a template in that directory called `THIRD_PARTY_NOTICES.md.tmpl` that is compatible with [Tera](https://keats.github.io/tera/docs/), a file will be rendered as `THIRD_PARTY_NOTICES.md` by using the template with the metadata retrieved about your Rust project with `cargo deny`. See the example template located at [`src/templates`](./src/templates/), which was used to generate our [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md), for an idea of possible templates.
+The action will take a path to a template of your choice as its `template-file-path` input. Provided the template is compatible with [Tera](https://keats.github.io/tera/docs/), a file will be rendered as `THIRD_PARTY_NOTICES.md` by using both the template and the metadata retrieved about your Rust project's dependencies with `cargo deny`. See our own example template located at [`THIRD_PARTY_NOTICES.md.tmpl`](./THIRD_PARTY_NOTICES.md.tmpl), which is used to generate our [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md), for an idea of expected outputs.
 
 Then, just use it inside your workflows.
 
@@ -49,7 +49,7 @@ jobs:
 
       - uses: newrelic/rust-licenses-noticer@main
         with:
-          template-path: third_party_licenses_templates
+          template-file-path: third_party_licenses_templates
           project-root: my-rust-project-directory # Optional
 ```
 
@@ -69,17 +69,19 @@ This will output a JSON that you can use as the `--dependencies` command line ar
 
 ```sh
 $ rust-licenses-noticer --help
-Usage: rust-licenses-noticer [OPTIONS] --dependencies <DEPENDENCIES>
+Arguments for the CLI
+
+Usage: rust-licenses-noticer [OPTIONS] --dependencies <DEPENDENCIES> --template-file <TEMPLATE_FILE>
 
 Options:
-  -d, --dependencies <DEPENDENCIES>    Name of the person to greet
-  -t, --template-path <TEMPLATE_PATH>  [default: src/templates/*]
-  -o, --output-file <OUTPUT_FILE>      [default: THIRD_PARTY_NOTICES.md]
+  -d, --dependencies <DEPENDENCIES>    JSON string with the dependencies data as output by `cargo deny list -l crate -f json`
+  -t, --template-file <TEMPLATE_FILE>  Path to the template file
+  -o, --output-file <OUTPUT_FILE>      Path to the output file [default: THIRD_PARTY_NOTICES.md]
   -h, --help                           Print help
   -V, --version                        Print version
 ```
 
-Provide templates compatible with [Tera](https://keats.github.io/tera/docs/) as a glob for `--template-path` to build the file output by `--output-file`.
+Provide a template compatible with [Tera](https://keats.github.io/tera/docs/) for `--template-file` to build the file output by `--output-file`.
 
 For an example of actual usage as a program, check the golden tests at [`tests/golden`](./tests/golden) which contain a test that creates the command with the command line arguments and runs it.
 

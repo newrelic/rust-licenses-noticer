@@ -13,40 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Rust stable
-        uses: dtolnay/rust-toolchain@master
+      - uses: newrelic/rust-licenses-noticer@refactor/code-cleanup
         with:
-          toolchain: stable
-      
-      - name: Install cargo-deny
-        run: cargo install cargo-deny --locked
-
-      - name: Retrieve dependencies with cargo deny
-        run: >
-          cargo deny
-          --all-features
-          --log-level off
-          --manifest-path ./Cargo.toml
-          list
-          -l crate
-          -f json > dependencies.json
-
-      - name: Perform the third party licenses check
-        run: >
-          cargo run --manifest-path ./Cargo.toml
-          --
-          --dependencies "$(cat dependencies.json)"
-          --output-file "./THIRD_PARTY_NOTICES.md"
-          --template-path "./src/templates/*"
-
-      - name: Check if `THIRD_PARTY_NOTICES.md` was up to date
-        run: >
-          git diff --name-only
-          | grep -q "THIRD_PARTY_NOTICES.md"
-          && { 
-            echo "Third party notices out of date.
-            Please run rust-licenses-noticer in this repo and commit the changes in this PR.";
-            exit 1;
-          }
-          || echo "Third party notices up to date."
+          template-file: "./THIRD_PARTY_NOTICES.md.tmpl"
+          rust-licenses-noticer-branch: "refactor/code-cleanup"
 

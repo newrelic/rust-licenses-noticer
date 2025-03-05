@@ -4,85 +4,71 @@
 //! of the dependencies of a project.
 //!
 //! The tool takes a JSON string with the dependency metadata as output by `cargo deny --manifest-path <PATH_TO_CARGO_TOML> list -l crate -f json` and generates a markdown file with the relevant information.
-extern crate tera;
-#[macro_use]
-extern crate lazy_static;
-
-use serde_json::{Map, Value};
-use std::collections::{HashMap, HashSet};
-use std::error::Error;
-use std::fs::File;
-use std::io::Write;
-use tera::{Context, Tera};
 
 use clap::Parser;
+use rust_licenses_noticer::template::{TemplateError, TemplateRenderer};
+use std::path::PathBuf;
+use std::{fs, io};
+use thiserror::Error;
 
+fn main() {
+    if let Err(e) = run() {
+        eprintln!("Error: {e}");
+        std::process::exit(1);
+    }
+}
+
+/// Arguments for the CLI
+///
+/// These are parsed automatically via the `clap` crate.
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    /// Name of the person to greet
+    /// JSON string with the dependencies data as output by `cargo deny list -l crate -f json`.
     #[arg(short, long)]
     dependencies: String,
+    /// Path to the template file.
     #[arg(short, long)]
-    #[clap(default_value = "src/templates/*")]
-    template_path: String,
+    template_file: PathBuf,
+    /// Path to the output file.
     #[arg(short, long)]
     #[clap(default_value = "THIRD_PARTY_NOTICES.md")]
-    output_file: String,
+    output_file: PathBuf,
 }
 
-lazy_static! {
-    pub static ref TEMPLATES: Tera = {
-        let args = Args::parse();
-        let tpl_path = args.template_path;
-        match Tera::new(&tpl_path) {
-            Ok(t) => t,
-            Err(e) => {
-                println!("Parsing error(s): {}", e);
-                ::std::process::exit(1);
-            }
-        }
-    };
+/// Error type for the main function.
+///
+/// This is a simple error type that wraps the errors that can happen in the `run` function.
+#[derive(Debug, Error)]
+enum RunError {
+    /// Error related to file IO.
+    #[error("file io: {0}")]
+    Io(#[from] io::Error),
+    /// Error related to the template engine.
+    #[error("template: {0}")]
+    Template(#[from] TemplateError),
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+/// Main function of the CLI.
+///
+/// This function is responsible for parsing the arguments, reading the template file,
+/// rendering the template with the dependencies data and writing the output file.
+///
+/// # Errors
+///
+/// This function returns a `RunError` if any of the steps fails.
+fn run() -> Result<(), RunError> {
     let args = Args::parse();
-    let mut f = File::create(args.output_file)?;
-    let markdown = render_markdown(args.dependencies);
-    match markdown {
-        Ok(s) => Ok(f.write_all(s.as_bytes())?),
-        Err(e) => {
-            println!("Error: {}", e);
-            let mut cause = e.source();
-            while let Some(e) = cause {
-                println!("Reason: {}", e);
-                cause = e.source();
-            }
-            Err("Error rendering the template".into())
-        }
-    }
-}
 
-fn render_markdown(data: String) -> Result<String, Box<dyn Error>> {
-    let serialized = serde_json::from_str::<Map<String, Value>>(data.as_str()).unwrap();
+    let renderer = TemplateRenderer::try_from(args.template_file)?;
 
-    let mut seen = HashSet::new();
-    let mut unique_map = HashMap::new();
+    let rendered = renderer.render(&args.dependencies)?;
 
-    for (key, value) in &serialized {
-        if !key.is_empty() {
-            let key_split: Vec<&str> = key.split_whitespace().collect();
-            if seen.insert(key_split[0]) {
-                unique_map.insert(key, value);
-            }
-        }
-    }
+    fs::write(&args.output_file, rendered)?;
 
-    let mut context = Context::new();
-    context.insert("dependencies", &unique_map);
-
-    // A one off template
-    Tera::one_off("hello", &Context::new(), true).unwrap();
-
-    Ok(TEMPLATES.render("THIRD_PARTY_NOTICES.md.tmpl", &context)?)
+    println!(
+        "Third party notices file generated at: {}",
+        args.output_file.display()
+    );
+    Ok(())
 }
