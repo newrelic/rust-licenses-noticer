@@ -35,11 +35,12 @@ runs:
     - name: Retrieve dependencies with cargo deny
       run: >
         echo "LICENSES=$(
-        cargo deny --all-features
+        cargo deny
+        --all-features
+        --log-level warn
         --manifest-path ${{ inputs.project-root }}/Cargo.toml
         --locked
         list -l crate -f json
-        2>/dev/tty
         )" >> $GITHUB_ENV
       shell: bash
 
