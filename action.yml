@@ -36,9 +36,10 @@ runs:
       run: >
         echo "LICENSES=$(
         cargo deny --all-features
-        --log-level off
         --manifest-path ${{ inputs.project-root }}/Cargo.toml
+        --locked
         list -l crate -f json
+        2>/dev/tty
         )" >> $GITHUB_ENV
       shell: bash
 
