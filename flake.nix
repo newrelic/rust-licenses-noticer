@@ -182,7 +182,7 @@
             LICENSES=$(${pkgs.cargo-deny}/bin/cargo-deny --all-features --log-level off --manifest-path Cargo.toml list -l crate -f json)
             echo $LICENSES
 
-            ${rust-licenses-noticer}/bin/rust-licenses-noticer --dependencies "$LICENSES" --output-file "THIRD_PARTY_NOTICES.md" --template-path "THIRD_PARTY_NOTICES.md.tmpl"
+            ${rust-licenses-noticer}/bin/rust-licenses-noticer --dependencies "$LICENSES" --output-file "THIRD_PARTY_NOTICES.md" --template-file "THIRD_PARTY_NOTICES.md.tmpl"
 
             STATUS=$(${pkgs.git}/bin/git status --porcelain --untracked-files=all -- "THIRD_PARTY_NOTICES.md")
 
