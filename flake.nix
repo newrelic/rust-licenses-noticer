@@ -175,6 +175,7 @@
 
         # Run the flake directly from anywhere with `nix run github:newrelic/rust-licenses-noticer`,
         # and don't worry about installing `cargo-deny`! (nor `git`... but you have that, do you?)
+        # TODO fail with error!!!
         apps.default = flake-utils.lib.mkApp {
           drv = pkgs.writeShellScriptBin "third-party-licenses-check" ''
             set -euo pipefail
