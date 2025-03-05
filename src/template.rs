@@ -33,6 +33,9 @@ pub enum TemplateError {
     /// Errors related to the template file handling.
     #[error("file validation: {0}")]
     FileValidation(io::Error),
+    /// Errors related to the deserialization of the dependencies data.
+    #[error("deserialization: {0}")]
+    Deserialization(serde_json::Error),
 }
 
 impl TryFrom<PathBuf> for TemplateRenderer {
@@ -80,7 +83,8 @@ fn validate_template_path<P: AsRef<Path>>(path: P) -> Result<(), TemplateError> 
 impl TemplateRenderer {
     /// Renders the template with the given dependencies data.
     pub fn render(&self, dependencies_data: &str) -> Result<String, TemplateError> {
-        let serialized = serde_json::from_str::<CargoDenyList>(dependencies_data).unwrap();
+        let serialized = serde_json::from_str::<CargoDenyList>(dependencies_data)
+            .map_err(TemplateError::Deserialization)?;
 
         let context = Context::from_serialize(serialized).map_err(TemplateError::EngineImpl)?;
 
