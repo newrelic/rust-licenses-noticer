@@ -13,8 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: newrelic/rust-licenses-noticer@refactor/code-cleanup
+      - uses: newrelic/rust-licenses-noticer@main
         with:
           template-file: "./THIRD_PARTY_NOTICES.md.tmpl"
-          rust-licenses-noticer-branch: "refactor/code-cleanup"
+          rust-licenses-noticer-branch: ${{ github.ref }}
 
