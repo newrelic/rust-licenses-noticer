@@ -35,9 +35,11 @@ runs:
     - name: Retrieve dependencies with cargo deny
       run: >
         echo "LICENSES=$(
-        cargo deny --all-features
-        --log-level off
+        cargo deny
+        --all-features
+        --log-level warn
         --manifest-path ${{ inputs.project-root }}/Cargo.toml
+        --locked
         list -l crate -f json
         )" >> $GITHUB_ENV
       shell: bash
@@ -77,4 +79,12 @@ runs:
         else
           echo "Third party notices up to date."
         fi
+      shell: bash
+
+    - name: Show the output of cargo deny
+      if: failure()
+      run: |
+        echo "::group::Cargo deny output"
+        echo "$LICENSES" | jq
+        echo "::endgroup::"
       shell: bash
