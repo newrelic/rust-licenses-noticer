@@ -13,8 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: newrelic/rust-licenses-noticer@refactor/code-cleanup
+      - name: Run current action version 
+        uses: ./ # Directory of the action.yml file
         with:
           template-file: "./THIRD_PARTY_NOTICES.md.tmpl"
-          rust-licenses-noticer-branch: "refactor/code-cleanup"
+          rust-licenses-noticer-branch: ${{ github.ref_name }}
 
