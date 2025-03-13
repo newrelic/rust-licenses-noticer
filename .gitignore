@@ -3,6 +3,14 @@
 # git-hooks.nix
 .pre-commit-config.yaml
 
-# direnv
+# Created by https://www.toptal.com/developers/gitignore/api/direnv
+# Edit at https://www.toptal.com/developers/gitignore?templates=direnv
+
+### direnv ###
 .direnv
 .envrc
+
+# End of https://www.toptal.com/developers/gitignore/api/direnv
+
+# Nix outputs
+/result*

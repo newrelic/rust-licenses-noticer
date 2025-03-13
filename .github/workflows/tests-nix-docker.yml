@@ -1,0 +1,30 @@
+permissions:
+  contents: read
+on:
+  push:
+
+# See https://docs.github.com/en/actions/using-jobs/using-concurrency
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+name: Tests (Nix ❄️ + Docker 🐳)
+jobs:
+  basic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      # Taking over!
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Run "cargo test --locked"
+        run: nix build .#docker-image
+
+      - name: Load this image into docker
+        run: docker load -i result
+
+      - name: Run image
+        run: docker run rust-licenses-noticer-image:latest rust-licenses-noticer --help

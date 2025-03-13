@@ -1,0 +1,4 @@
+# This devshell is defined as a TOML and automatically converted to a Nix shell by a tool
+# From Numtide: https://numtide.github.io/devshell
+[[commands]]
+package = "hello"
