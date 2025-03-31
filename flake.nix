@@ -106,6 +106,7 @@
           gitHooks = self.checks.${system}.pre-commit-check;
         in
         {
+          # A basic shell with the Rust toolchain. Ideal for development!
           basic = pkgs.mkShell {
             packages = with pkgs; [
               # The Rust toolchain
@@ -117,6 +118,13 @@
               # Completely run our project from this shell
               git
               cargo-deny
+            ];
+          };
+
+          # Now imagine a shell for infra actions on aws
+          infra-actions = pkgs.mkShell {
+            packages = with pkgs; [
+              awscli
             ];
           };
 
