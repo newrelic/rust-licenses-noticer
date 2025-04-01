@@ -11,7 +11,7 @@ Ensures the dependencies you declare in your `THIRD_PARTY_NOTICES.md` are in syn
 At the moment the project is not on [`crates.io`](https://crates.io). To install, having the [Rust toolchain](https://rustup.rs) installed, you can run:
 
 ```sh
-cargo install --git https://github.com/nerelic/rust-licenses-noticer.git
+cargo install --git https://github.com/newrelic/rust-licenses-noticer.git
 ```
 
 ## Getting Started
