@@ -24,7 +24,7 @@ runs:
   using: "composite"
   steps:
     - name: Install Rust stable
-      uses: dtolnay/rust-toolchain@1.85.0
+      uses: dtolnay/rust-toolchain@1.88.0
 
     - name: Install cargo-deny
       run: >
