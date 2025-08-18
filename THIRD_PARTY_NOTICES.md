@@ -97,13 +97,6 @@ Distributed under the following license(s):
 * MIT
 * Apache-2.0
 
-## byteorder <https://crates.io/crates/byteorder>
-
-Distributed under the following license(s):
-
-* Unlicense
-* MIT
-
 ## cc <https://crates.io/crates/cc>
 
 Distributed under the following license(s):
@@ -330,7 +323,6 @@ Distributed under the following license(s):
 Distributed under the following license(s):
 
 * MIT
-* Apache-2.0
 
 ## log <https://crates.io/crates/log>
 
@@ -354,6 +346,13 @@ Distributed under the following license(s):
 * Apache-2.0
 
 ## once_cell <https://crates.io/crates/once_cell>
+
+Distributed under the following license(s):
+
+* MIT
+* Apache-2.0
+
+## once_cell_polyfill <https://crates.io/crates/once_cell_polyfill>
 
 Distributed under the following license(s):
 
@@ -733,7 +732,35 @@ Distributed under the following license(s):
 * MIT
 * Apache-2.0
 
+## windows-implement <https://crates.io/crates/windows-implement>
+
+Distributed under the following license(s):
+
+* MIT
+* Apache-2.0
+
+## windows-interface <https://crates.io/crates/windows-interface>
+
+Distributed under the following license(s):
+
+* MIT
+* Apache-2.0
+
 ## windows-link <https://crates.io/crates/windows-link>
+
+Distributed under the following license(s):
+
+* MIT
+* Apache-2.0
+
+## windows-result <https://crates.io/crates/windows-result>
+
+Distributed under the following license(s):
+
+* MIT
+* Apache-2.0
+
+## windows-strings <https://crates.io/crates/windows-strings>
 
 Distributed under the following license(s):
 
@@ -811,14 +838,6 @@ Distributed under the following license(s):
 * Apache-2.0
 
 ## zerocopy <https://crates.io/crates/zerocopy>
-
-Distributed under the following license(s):
-
-* BSD-2-Clause
-* Apache-2.0
-* MIT
-
-## zerocopy-derive <https://crates.io/crates/zerocopy-derive>
 
 Distributed under the following license(s):
 
