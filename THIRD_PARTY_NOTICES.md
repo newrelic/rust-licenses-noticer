@@ -222,6 +222,13 @@ Distributed under the following license(s):
 * MIT
 * Apache-2.0
 
+## find-msvc-tools <https://crates.io/crates/find-msvc-tools>
+
+Distributed under the following license(s):
+
+* MIT
+* Apache-2.0
+
 ## generic-array <https://crates.io/crates/generic-array>
 
 Distributed under the following license(s):
