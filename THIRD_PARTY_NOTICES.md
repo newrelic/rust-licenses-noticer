@@ -13,13 +13,6 @@ Distributed under the following license(s):
 * Unlicense
 * MIT
 
-## android-tzdata <https://crates.io/crates/android-tzdata>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
 ## android_system_properties <https://crates.io/crates/android_system_properties>
 
 Distributed under the following license(s):
@@ -516,6 +509,13 @@ Distributed under the following license(s):
 * MIT
 
 ## serde <https://crates.io/crates/serde>
+
+Distributed under the following license(s):
+
+* MIT
+* Apache-2.0
+
+## serde_core <https://crates.io/crates/serde_core>
 
 Distributed under the following license(s):
 
