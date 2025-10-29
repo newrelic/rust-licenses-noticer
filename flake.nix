@@ -253,17 +253,13 @@
           # Our actual Rust project! Nixpkgs includes some helpers to build simple Rust projects.
           rust-licenses-noticer = pkgs.rustPlatform.buildRustPackage {
             pname = "rust-licenses-noticer";
-            version = "0.1.0";
+            version = "1.0.0";
             src = ./.;
 
             # Explicit dependencies to the build!
             nativeBuildInputs =
               with pkgs;
-              [
-                hello # We don't need this to build our Rust project, but imagine we do!
-              ]
-              # We can add optional dependencies based on the system
-              ++ lib.optionals stdenv.isDarwin [
+              lib.optionals stdenv.isDarwin [
                 libiconv
               ];
 
