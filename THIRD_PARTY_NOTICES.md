@@ -611,48 +611,6 @@ Distributed under the following license(s):
 * MIT
 * Apache-2.0
 
-## unic-char-property <https://crates.io/crates/unic-char-property>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
-## unic-char-range <https://crates.io/crates/unic-char-range>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
-## unic-common <https://crates.io/crates/unic-common>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
-## unic-segment <https://crates.io/crates/unic-segment>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
-## unic-ucd-segment <https://crates.io/crates/unic-ucd-segment>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
-## unic-ucd-version <https://crates.io/crates/unic-ucd-version>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
 ## unicode-ident <https://crates.io/crates/unicode-ident>
 
 Distributed under the following license(s):
@@ -660,6 +618,13 @@ Distributed under the following license(s):
 * MIT
 * Apache-2.0
 * Unicode-3.0
+
+## unicode-segmentation <https://crates.io/crates/unicode-segmentation>
+
+Distributed under the following license(s):
+
+* MIT
+* Apache-2.0
 
 ## utf8parse <https://crates.io/crates/utf8parse>
 
