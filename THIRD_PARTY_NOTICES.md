@@ -662,13 +662,6 @@ Distributed under the following license(s):
 * MIT
 * Apache-2.0
 
-## wasm-bindgen-backend <https://crates.io/crates/wasm-bindgen-backend>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
 ## wasm-bindgen-macro <https://crates.io/crates/wasm-bindgen-macro>
 
 Distributed under the following license(s):
