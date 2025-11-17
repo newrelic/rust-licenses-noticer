@@ -739,69 +739,6 @@ Distributed under the following license(s):
 * MIT
 * Apache-2.0
 
-## windows-targets <https://crates.io/crates/windows-targets>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
-## windows_aarch64_gnullvm <https://crates.io/crates/windows_aarch64_gnullvm>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
-## windows_aarch64_msvc <https://crates.io/crates/windows_aarch64_msvc>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
-## windows_i686_gnu <https://crates.io/crates/windows_i686_gnu>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
-## windows_i686_gnullvm <https://crates.io/crates/windows_i686_gnullvm>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
-## windows_i686_msvc <https://crates.io/crates/windows_i686_msvc>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
-## windows_x86_64_gnu <https://crates.io/crates/windows_x86_64_gnu>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
-## windows_x86_64_gnullvm <https://crates.io/crates/windows_x86_64_gnullvm>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
-## windows_x86_64_msvc <https://crates.io/crates/windows_x86_64_msvc>
-
-Distributed under the following license(s):
-
-* MIT
-* Apache-2.0
-
 ## zerocopy <https://crates.io/crates/zerocopy>
 
 Distributed under the following license(s):
