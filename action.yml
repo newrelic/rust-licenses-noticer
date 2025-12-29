@@ -4,7 +4,7 @@ description: >
   generates a `THIRD_PARTY_NOTICES.md` file from a provided template and
   compares it with yours, failing if they are not the same.
 inputs:
-  project-root: # id of input
+  project-root:
     description: "The root directory of the project to check"
     required: false
     default: ${{ github.workspace }}
@@ -14,7 +14,7 @@ inputs:
   notices-file:
     description: "The path to the notices file"
     required: false
-    default: "THIRD_PARTY_NOTICES.md"
+    default: "./THIRD_PARTY_NOTICES.md"
   rust-licenses-noticer-branch:
     description: "The branch to use for the rust-licenses-noticer tool"
     required: false
@@ -23,68 +23,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Install Rust stable
-      uses: dtolnay/rust-toolchain@1.88.0
+    - name: Install Nix
+      uses: DeterminateSystems/nix-installer-action@main
 
-    - name: Install cargo-deny
+    - name: Run the default program
       run: >
-        cargo install cargo-deny
-        --quiet --locked
-      shell: bash
-
-    - name: Retrieve dependencies with cargo deny
-      run: >
-        echo "LICENSES=$(
-        cargo deny
-        --all-features
-        --log-level warn
-        --manifest-path ${{ inputs.project-root }}/Cargo.toml
-        --locked
-        list -l crate -f json
-        )" >> $GITHUB_ENV
-      shell: bash
-
-    - name: Install rust-licenses-noticer
-      run: >
-        cargo install
-        --git https://github.com/newrelic/rust-licenses-noticer.git
-        --branch ${{ inputs.rust-licenses-noticer-branch }}
-        --quiet --locked
-      shell: bash
-
-    - name: Perform the third party licenses check
-      run: >
-        rust-licenses-noticer
-        --dependencies "$LICENSES"
-        --template-file "${{ inputs.template-file }}"
-        --output-file "${{ inputs.notices-file }}"
-      shell: bash
-
-    - name: Check if the notices file was up to date
-      run: |
-        STATUS=$(git status --porcelain --untracked-files=all -- ${{ inputs.notices-file }})
-
-        if [[ "$STATUS" =~ ^"??" ]]; then
-          echo "::error file=${{ inputs.notices-file }},title=untracked-file::Notices file was created. Please run rust-licenses-noticer locally and commit the changes."
-          echo "::group::Notices file contents"
-          git diff -- ${{ inputs.notices-file }}
-          echo "::endgroup::"
-          exit 1
-        elif [[ "$STATUS" =~ ^" M" ]]; then
-          echo "::error file=${{ inputs.notices-file }},title=modified-file::Notices file was modified. Please run rust-licenses-noticer locally and commit the changes."
-          echo "::group::Notices file diff"
-          git diff -- ${{ inputs.notices-file }}
-          echo "::endgroup::"
-          exit 1
-        else
-          echo "Third party notices up to date."
-        fi
-      shell: bash
-
-    - name: Show the output of cargo deny
-      if: failure()
-      run: |
-        echo "::group::Cargo deny output"
-        echo "$LICENSES" | jq
-        echo "::endgroup::"
+        nix run .# --
+        --cargo-root=${{ inputs.project-root }}
+        --output-file=${{ inputs.notices-file }}
+        --template-file=${{ inputs.template-file }}
       shell: bash
