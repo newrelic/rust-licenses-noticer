@@ -494,13 +494,6 @@ Distributed under the following license(s):
 * MIT
 * Apache-2.0
 
-## ryu <https://crates.io/crates/ryu>
-
-Distributed under the following license(s):
-
-* Apache-2.0
-* BSL-1.0
-
 ## same-file <https://crates.io/crates/same-file>
 
 Distributed under the following license(s):
@@ -745,4 +738,10 @@ Distributed under the following license(s):
 
 * BSD-2-Clause
 * Apache-2.0
+* MIT
+
+## zmij <https://crates.io/crates/zmij>
+
+Distributed under the following license(s):
+
 * MIT
