@@ -2,16 +2,5 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "github>newrelic/newrelic-agent-control//.github/renovate-shared-base.json"
-  ],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "managerFilePatterns": ["action.yml"],
-      "matchStrings": ["uses: dtolnay/rust-toolchain@(?<currentDigest>[a-f0-9]+)\\s*#\\s*(?<currentValue>[\\d.]+)"],
-      "datasourceTemplate": "github-tags",
-      "depNameTemplate": "rust",
-      "packageNameTemplate": "rust-lang/rust",
-      "digestValueTemplate": "{{#if newDigest}}{{{newDigest}}}{{else}}{{{currentDigest}}}{{/if}}"
-    }
   ]
 }
