@@ -174,7 +174,7 @@
         pre-commit-check = git-hooks.lib.${system}.run {
           src = ./.;
           hooks = {
-            nixfmt-rfc-style.enable = true; # Format nix files
+            nixfmt.enable = true; # Format nix files
             convco.enable = true; # Enforce conventional commit messages
             markdownlint = {
               enable = false; # Markdown
