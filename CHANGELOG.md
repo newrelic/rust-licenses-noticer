@@ -7,3 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Unreleased section should follow [Release Toolkit](https://github.com/newrelic/release-toolkit/blob/main/README.md).
 
 ## Unreleased
+
+## v1.0.3 - 2026-05-15
+
+### ⛓️ Dependencies
+- Updated rust crate assert_cmd to 2.2.2
+- Updated rust crate clap to 4.6.1
