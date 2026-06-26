@@ -86,7 +86,7 @@ impl TemplateRenderer {
         let serialized = serde_json::from_str::<CargoDenyList>(dependencies_data)
             .map_err(TemplateError::Deserialization)?;
 
-        let context = Context::from_serialize(serialized).map_err(TemplateError::EngineImpl)?;
+        let context = Context::from_serialize(&serialized).map_err(TemplateError::EngineImpl)?;
 
         self.engine
             .render(&self.template_name, &context)
