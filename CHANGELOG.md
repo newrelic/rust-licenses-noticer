@@ -8,6 +8,9 @@ Unreleased section should follow [Release Toolkit](https://github.com/newrelic/r
 
 ## Unreleased
 
+### 🐞 Bug fixes
+- Use named arguments in template filters/tests and preserve dependency ordering for compatibility with `tera` v2.
+
 ## v1.0.3 - 2026-05-15
 
 ### ⛓️ Dependencies
