@@ -2,6 +2,12 @@ permissions:
   contents: read
 on:
   push:
+    # This check dogfoods the action by installing the noticer from the pushed
+    # ref via `cargo install --branch ${{ github.ref_name }}`. On a tag push
+    # (e.g. the moving `v1` tag updated during a release) that ref is a tag, not
+    # a branch, so the install fails with "failed to find branch". Skip tags.
+    tags-ignore:
+      - "**"
 # See https://docs.github.com/en/actions/using-jobs/using-concurrency
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
