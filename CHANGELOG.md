@@ -8,6 +8,9 @@ Unreleased section should follow [Release Toolkit](https://github.com/newrelic/r
 
 ## Unreleased
 
+### enhancement
+- Run the composite action through a Nix flake (`nix run .#`) instead of installing the Rust toolchain and `cargo-deny` and building from source.
+
 ## v1.0.4 - 2026-06-29
 
 ### 🐞 Bug fixes
