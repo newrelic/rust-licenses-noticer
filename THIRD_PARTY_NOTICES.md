@@ -76,12 +76,33 @@ Distributed under the following license(s):
 * MIT
 * Apache-2.0
 
+## equivalent <https://crates.io/crates/equivalent>
+
+Distributed under the following license(s):
+
+* Apache-2.0
+* MIT
+
+## hashbrown <https://crates.io/crates/hashbrown>
+
+Distributed under the following license(s):
+
+* MIT
+* Apache-2.0
+
 ## heck <https://crates.io/crates/heck>
 
 Distributed under the following license(s):
 
 * MIT
 * Apache-2.0
+
+## indexmap <https://crates.io/crates/indexmap>
+
+Distributed under the following license(s):
+
+* Apache-2.0
+* MIT
 
 ## is_terminal_polyfill <https://crates.io/crates/is_terminal_polyfill>
 
