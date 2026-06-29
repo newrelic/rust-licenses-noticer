@@ -13,12 +13,12 @@ For any licenses that require the disclosure of source code, the source code
 can be found at https://github.com/newrelic/newrelic-oauth-client-rs.
 
 {% for dep, licenseObj in dependencies %}
-{%- if dep is containing("newrelic_agent_control") %}{% continue %}{% endif -%}
-{%- if dep is containing("resource-detection") %}{% continue %}{% endif -%}
-{%- if dep is containing("fs") %}{% continue %}{% endif -%}
-{%- if dep is containing("nr-auth") %}{% continue %}{% endif -%}
-{%- if dep is containing("license") %}{% continue %}{% endif -%}
-{%- if dep is containing("config-migrate") %}{% continue %}{% endif -%}
+{%- if dep is containing(pat="newrelic_agent_control") %}{% continue %}{% endif -%}
+{%- if dep is containing(pat="resource-detection") %}{% continue %}{% endif -%}
+{%- if dep is containing(pat="fs") %}{% continue %}{% endif -%}
+{%- if dep is containing(pat="nr-auth") %}{% continue %}{% endif -%}
+{%- if dep is containing(pat="license") %}{% continue %}{% endif -%}
+{%- if dep is containing(pat="config-migrate") %}{% continue %}{% endif -%}
 ## {{ dep | split(pat=" ") | first }} {{ dep | split(pat=" ") | last | replace(from="registry+https://github.com/rust-lang/crates.io-index", to="https://crates.io/crates/" ~ dep | split(pat=" ") | first ) }}
 
 Distributed under the following license(s):

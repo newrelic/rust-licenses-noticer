@@ -21,7 +21,7 @@
 //!
 //! This module parses this JSON object into a more usable format for our use case.
 //! See [CargoDenyList] type for more information.
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 use serde::{Deserialize, Deserializer, Serialize};
 
@@ -47,7 +47,13 @@ use serde::{Deserialize, Deserializer, Serialize};
 #[derive(Debug, Serialize, PartialEq)]
 pub(super) struct CargoDenyList {
     /// Map of dependencies and their licenses.
-    dependencies: HashMap<NameAndUrl, LicenseList>,
+    ///
+    /// This is intentionally a [BTreeMap] (not a [HashMap](std::collections::HashMap)): it keeps
+    /// dependencies sorted by key so the generated notices file has a stable, alphabetical order.
+    /// `tera` is built with the `preserve_order` feature so it renders this map in iteration order
+    /// rather than sorting itself (tera v1 sorted map keys on iteration; v2 does not). Do not swap
+    /// this for an unordered map or the output ordering becomes non-deterministic.
+    dependencies: BTreeMap<NameAndUrl, LicenseList>,
 }
 
 impl<'de> Deserialize<'de> for CargoDenyList {
@@ -56,7 +62,7 @@ impl<'de> Deserialize<'de> for CargoDenyList {
         D: Deserializer<'de>,
     {
         Ok(CargoDenyList {
-            dependencies: HashMap::deserialize(deserializer)?,
+            dependencies: BTreeMap::deserialize(deserializer)?,
         })
     }
 }
@@ -81,7 +87,7 @@ struct LicenseList {
 /// ```
 ///
 /// The URL is formatted as a link to the dependency's page.
-#[derive(Debug, PartialEq, Eq, Hash, Serialize)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize)]
 struct NameAndUrl(String);
 
 impl<'de> Deserialize<'de> for NameAndUrl {
