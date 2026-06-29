@@ -1,6 +1,6 @@
 [package]
 name = "rust-licenses-noticer"
-version = "1.0.3"
+version = "1.0.4"
 authors = ["The New Relic Agent Control Team"]
 edition = "2024"
 publish = false
