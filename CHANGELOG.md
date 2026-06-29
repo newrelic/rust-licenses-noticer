@@ -8,8 +8,15 @@ Unreleased section should follow [Release Toolkit](https://github.com/newrelic/r
 
 ## Unreleased
 
-### bugfix
+## v1.0.4 - 2026-06-29
+
+### 🐞 Bug fixes
 - Use named arguments in template filters/tests and preserve dependency ordering for compatibility with `tera` v2.
+
+### ⛓️ Dependencies
+- Updated rust crate serde_json to 1.0.150
+- Updated rust crate assert_fs to 1.1.4
+- Updated rust crate tera to v2
 
 ## v1.0.3 - 2026-05-15
 
