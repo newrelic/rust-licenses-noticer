@@ -1,1 +1,8 @@
 /target
+
+# git-hooks.nix
+.pre-commit-config.yaml
+
+# direnv
+.direnv
+.envrc
