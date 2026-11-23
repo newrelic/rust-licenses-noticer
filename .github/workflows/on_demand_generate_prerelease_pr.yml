@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   prerelease:
-    uses: newrelic/newrelic-agent-control/.github/workflows/shared_create_prerelease_pr.yml@663b5afe03427d71d9689e45c3f8bb5b77e5e9db # main
+    uses: newrelic/newrelic-agent-control/.github/workflows/shared_create_prerelease_pr.yml@8530c419485782ea964c5f5e4a2678c14569cb10 # main
     with:
       cargo_toml_path: "Cargo.toml"
     secrets:
